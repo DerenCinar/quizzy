@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<head>
+    <title>Quizzy</title>
+    <script src="https://unpkg.com/vue@3" defer></script>
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        h1 {text-align: center;}
+    
+        main {
+            overflow: hidden;
+            display: block;
+            height: auto;
+        }
+        
+        
+
+
+    </style>
+</head>
+<body id="app">
+    <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="index.html">
+            <img src="Quizzy.png">
+      
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-end">
+            <div class="navbar-item">
+  
+            <div class="buttons">
+            <button class="button" :class="{ 'is-white' : currentPage === 'home', 'is-info' : currentPage !== 'home'}" v-on:click="currentPage = 'home'">
+                Home
+            </button>
+            <button class="button" :class="{ 'is-white' : currentPage === 'explore', 'is-info' : currentPage !== 'explore'}" v-on:click="currentPage = 'explore'">
+                Explore
+            </button>
+            <button class="button is-rounded" style="color:white;background-color: rgb(255, 204, 0);" v-on:click="currentPage = 'create'">
+                <b>Create</b>
+            </button>
+              <div class="dropdown" :class="{ 'is-active': showDropdown }">
+                <div class="dropdown-trigger">
+                    <div class="field">
+                      <div class="control has-icons-left has-icons-right">
+                        <input class="input is-rounded" type="search" placeholder="Search" v-model="searchValue"/>
+                        <span class="icon is-small is-left">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                          </svg>
+                        </span>
+                        
+                      </div>
+        
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <ul v-if="quizzes && filteredItems.length > 0">
+                        <li v-for="item in filteredItems">
+                          <a class="dropdown-item" v-on:click="switchQuiz(item.name)">{{ item?.displayName }}</a>
+                          
+                        </li>
+                      </ul>
+                        <a v-else class="dropdown-item">No results found</a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="button is-info is-rounded" style="color:white; ">
+                <img src="Circle-icons-profile.svg.png">
+            </button>
+            
+           
+      
+        </div> 
+        </div> 
+          </div>
+      
+
+        </div>
+      </nav>
+      <br>
+      <br>
+      <!--Home Page-->
+      <main v-if="currentPage === 'home'">
+        <section class="hero is-black">
+          <div class="hero-body">
+              <h1 class="title">Welcome to Quizzy!</h1>
+              <h1>The Completely <b class="has-text-success">FREE</b> Quiz Website</h1>
+              <br>
+              
+              
+              <div class="dropdown ddown" :class="{ 'is-active': showDropdownHome }">
+                <div class="dropdown-trigger ddown">
+                    <div class="field">
+                      <div class="control has-icons-left has-icons-right">
+                        <input class="input is-rounded" type="search" placeholder="Search for a quiz here" v-model="searchValueHome"/>
+                        <span class="icon is-small is-left">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                          </svg>
+                        </span>
+                        
+                      </div>
+        
+                    </div>
+                </div>
+                <div class="dropdown-menu ddown" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <ul v-if="quizzes && filteredItemsHome.length > 0">
+                        <li v-for="item in filteredItemsHome">
+                          <a class="dropdown-item" v-on:click="switchQuiz(item.name)">{{ item?.displayName }}</a>
+                          
+                        </li>
+                      </ul>
+                        <a v-else class="dropdown-item">No results found</a>
+                    </div>
+                </div> 
+              </div>  
+              
+            </div>
+            
+          </div>
+          
+          <br>
+          
+
+        </section>
+       
+        <section class="hero" style="background-color:green; color:white">
+          <div class="hero-body">
+            
+            <h1 class="title" style="color:white">With Quizzy you can </h1>
+            <ul>
+              <li><h1>Learn for Tests</h1></li>
+              <li><h1>Create Quizzes for <b>FREE</b></h1></li>
+              <li><h1>Play quizzes made by us</h1></li>
+              <li><h1>Play quizzes made by others* </h1></li>
+              <li><h1 class="subtitle is-7" style="color:white">(*currently unavalible)</h1></li>
+
+            </ul>
+            
+          </div>
+          
+        </section>
+        
+        <section class="section">
+          <h1 class="title">Learn about the Quiz Page</h1>
+          <div class="box">
+            <div class="field">
+              <b>When was Quizzy created?</b>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input" type="text" value="Feb 1 2025" readonly />
+              </div>           
+            </div>
+            <div class="field">
+              <div class="buttons">
+                <button class="button is-success">Check</button>
+                <button class="button is-info">Help</button>
+  
+              </div>
+            </div>
+          </div>
+        </section>
+        </div>
+        
+      </main>
+      <!--Quiz Page-->
+      <main v-if="currentPage === 'quiz'">
+        <section class="section">
+          <div class="container">
+            <div class="box">
+              <nav class="level is-mobile">
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading has-text-success">Correct</p>
+                    <p class="title"><span class="has-text-success">{{points}}</span><span class="has-text-grey">{{ '/' + this.questions.length}}</span></p>
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                   <img src="Quizzy.png" class="center" style="width:20%">
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading has-text-danger">Incorrect</p>
+                    <p class="title"><span class="has-text-danger">{{incorrect}}</span><span class="has-text-grey">{{ '/' + this.questions.length}}</span></p>
+                  </div>
+                </div>
+              </nav>
+            </div>
+            <div class="box" v-if="!completed">
+              <div class="field">
+                <b>{{question}}</b>
+              </div>
+              <div class="field">
+              <input v-if="!help" class="input" type="text" placeholder="Type your answer" v-model="input" v-on:keyup.enter="checkAnswer()"/>
+              <input v-if="help" class="input" type="text" placeholder="Type your answer" v-model="input" disabled/>
+              </div>
+              <div class="field buttons">
+              
+              <button v-if="!help" v-on:click="checkAnswer()" class="button is-success">Check</button>
+              <button v-if="help" v-on:click="checkAnswer()" class="button is-success" disabled>Check</button>
+              <button v-if="!help" v-on:click="helpNeeded()" class="button is-info">Help</button>
+              <button v-if="help" v-on:click="helpNeeded()" class="button is-info" disabled>Help</button>
+              </div>
+            </div>
+            <div class="box" v-if="completed">
+              <div class="field">
+                <h1><b>Quiz Completed!</b></h1>
+              </div>
+              <div class="field">
+                <h1>{{rewardSentance}}</h1>
+
+              </div>
+              <div class="field">
+              
+             <button v-if="this.points === this.questions.length && this.incorrect === 0" class="button is-success is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
+             <button v-if="this.points === this.questions.length && this.incorrect > 0" class="button is-warning is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
+             <button v-if="this.incorrect === this.questions.length" class="button is-danger is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
+
+              </div>
+            </div>
+            <div class="box" v-if="help">
+              <div class="field">
+                <h1><b>It seems like you need help</b></h1>
+              </div>
+              <div class="field">
+                <h1>The answer to this question is: <b class="has-text-success">{{this.questions[this.questionNumber].answer}}</b></h1>
+
+              </div>
+              <div class="field">
+              
+             <button class="button is-success is-fullwidth" v-on:click="this.help = false">Got it!</button>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <!--Create Page-->
+      <main v-if="currentPage === 'create'">
+        <section class="section">
+        <nav class="panel is-info" >
+          <p class="panel-heading">Quizzy | Quiz Creator 1.0</p>
+          <div class="panel-block">
+            <div class="coulums ddown">
+              <div class="coulum">
+                <input class="input" type="text" placeholder="Type Question here"  v-model="createQuestion"/>
+              </div>
+              <br>
+              <div class="coulum">
+                <input class="input" type="text" placeholder="Type Answer here"  v-model="createAnswer"/>
+              </div>
+              <br>
+              <button class="button is-success is-outlined is-fullwidth" v-on:click="addQuestion()">
+                Add Question
+              </button>
+            </div>
+          </div>
+          
+          <ul>
+            <li v-for="question in createList">
+              <div class="column">{{'Question: ' + question.question}}</div>                  
+              
+              <div class="column has-text-right">{{'Answer: ' + question.answer}}</div>                  
+
+            </li>
+          </ul>
+          
+          
+          
+          <div class="panel-block">
+            <button class="button is-info is-outlined is-fullwidth" v-on:click="saveQuiz()">
+              Done
+            </button>
+            
+          </div>
+        </nav>
+      </section>
+      </main>
+</body>
+

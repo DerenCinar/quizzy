@@ -1,0 +1,91 @@
+[   
+    {
+        "question": "INFO: This test is in testing phases, press enter to continue",
+        "answer": ""
+    },
+    {
+        "question": "die Notiz",
+        "answer": "la nota"
+    },
+    {
+        "question": "schweigsam sein",
+        "answer": "estar callado"
+    },
+    {
+        "question": "vor + Zeitangabe",
+        "answer": "hace + tiempo"
+    },
+    {
+        "question": "jdm etw. peinlock sein",
+        "answer": "dar contre a alguien"
+    },
+    {
+        "question": "vorgestern",
+        "answer": "anteayer"
+    },
+    {
+        "question": "etw. anschalten",
+        "answer": "encender algo"
+    },
+    {
+        "question": "der (Internet)Kanal",
+        "answer": "el canal(de Internet)"
+    },
+    {
+        "question": "nachdem",
+        "answer": "despuès de + inf."
+    },
+    {
+        "question": "etw. bedeuten",
+        "answer": "significar algo"
+    },
+    {
+        "question": "bevor",
+        "answer": "antes de + inf."
+    },
+    {
+        "question": "Berlin",
+        "answer": "Berlin"
+    },
+    {
+        "question": "ein Haufen + s., sehr viele + S.",
+        "answer": "mogollón de + sust.,fam."
+    },
+    {
+        "question": "ja,schon",
+        "answer": "pues si"
+    },
+    {
+        "question": "Marokko",
+        "answer": "Marruecos"
+    },
+    {
+        "question": "viel Spaß haben",
+        "answer": "pasarlo fenomenal"
+    },
+    {
+        "question": "hier: etw. erleben",
+        "answer": "vivir algo"
+    },
+    {
+        "question": "unglaublich sein",
+        "answer": "ser increíble"
+    },  
+    {
+        "question": "Arabisch (Sprache)",
+        "answer": "el árabe"
+    }, 
+    {
+        "question": "vielleicht",
+        "answer": "a lo mejor"
+    }, 
+    {
+        "question": "England",
+        "answer": "Inglaterra"
+    }, 
+    {
+        "question": "der Austausch",
+        "answer": "el intercambio"
+    }
+    
+]
