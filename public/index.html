@@ -3,6 +3,7 @@
     <title>Quizzy</title>
     <script src="https://unpkg.com/vue@3" defer></script>
     <script src="app.js" defer></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="style.css">
     <link
     rel="stylesheet"
@@ -79,14 +80,28 @@
                 </div>
             </div>
             
-            <button class="button is-info is-rounded" style="color:white; ">
-                <img src="Circle-icons-profile.svg.png">
+            <button class="button is-info is-rounded">
+              <div class="user">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                </span>
+              </div>
+            </button>
+            <button class="button is-info is-rounded">
+              <div class="wrapper">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-gear fa-stack-1x fa-inverse"></i>
+                </span></div>
+                
             </button>
             
            
       
         </div> 
         </div> 
+        
           </div>
       
 
@@ -295,6 +310,8 @@
         </nav>
       </section>
       </main>
+      
+        
       <!--Library Page-->
       <main v-if="currentPage === 'library'">
         <section class="hero is-black">
@@ -343,12 +360,12 @@
         </section>
         <div class="section">    
         <div v-show="searched">
-          <div class="fixed-grid has-5-cols	">
+          <div class="fixed-grid has-1-cols-mobile has-3-cols-tablet has-4-cols-desktop	has-5-cols-widescreen	has-5-cols-fullhd">
           <div class="grid">
             <ul v-for="book in bookSelector">
               <li>
                 <div class="cell">
-                  <div class="box"><img src="De.png">
+                  <div class="box"><img src="De.png" height="40%">
                     <h1 class="title is-3 OuiU">{{book.displayName}}</h1><button class="button is-fullwidth">Practice</button>
                   </div>
                 </div>

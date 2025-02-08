@@ -42,5 +42,25 @@
 .ddown {
   width: 100%;
 }
+.wrapper:hover .fa-stack{
+  color: red;
+  transition: 0.9s;
+  transform: rotate(180deg);
+}
+.wrapper{
+  display: inline-block;
+  overflow: hidden;
+  text-align: center;
+}
+.user:hover .fa-stack{
+  color: red;
+  transition: 1.8s;
+  transform: rotate(360deg);
+}
+.user{
+  display: inline-block;
+  overflow: hidden;
+  text-align: center;
+}
 
 
