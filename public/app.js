@@ -38,6 +38,11 @@ const app = Vue.createApp({
             createList: [
                 
             ],
+            schools: [
+                {displayName: 'German International School of Silicon Valley', name:'GISSV'},
+                {displayName: 'Quizzy Preview Quizzes', name:'QPQ'},
+            ],
+            searchValueSchool: ''
            
         }
     },
@@ -80,6 +85,11 @@ const app = Vue.createApp({
             if (this.searchValueHome != '') return true
             else return false
         },
+        showDropdownSchool() {
+            if (this.searchValueSchool != '') return true
+            else return false
+        },
+
         filteredItems() {
             if (this.searchValue === '') return ''
             else {
@@ -95,6 +105,15 @@ const app = Vue.createApp({
                 const term = this.searchValueHome.toLowerCase(); // For case-insensitive search
                 return this.quizzes.filter(quiz => {
                 return quiz.displayName.toLowerCase().includes(term); // Check if item name contains the search term
+             });
+            }
+        },
+        filteredItemsSchool() {
+            if (this.searchValueSchool === '') return ''
+            else {
+                const term = this.searchValueSchool.toLowerCase(); // For case-insensitive search
+                return this.schools.filter(school => {
+                return school.displayName.toLowerCase().includes(term); // Check if item name contains the search term
              });
             }
         }

@@ -45,8 +45,8 @@
             <button class="button" :class="{ 'is-white' : currentPage === 'home', 'is-info' : currentPage !== 'home'}" v-on:click="currentPage = 'home'">
                 Home
             </button>
-            <button class="button" :class="{ 'is-white' : currentPage === 'explore', 'is-info' : currentPage !== 'explore'}" v-on:click="currentPage = 'explore'">
-                Explore
+            <button class="button" :class="{ 'is-white' : currentPage === 'library', 'is-info' : currentPage !== 'library'}" v-on:click="currentPage = 'library'">
+                Library
             </button>
             <button class="button is-rounded" style="color:white;background-color: rgb(255, 204, 0);" v-on:click="currentPage = 'create'">
                 <b>Create</b>
@@ -294,6 +294,60 @@
           </div>
         </nav>
       </section>
+      </main>
+      <!--Library Page-->
+      <main v-if="currentPage === 'library'">
+        <section class="hero is-black">
+          <div class="hero-body">
+              <h1 class="title">Quizzy Library</h1>
+              <h1>Please select your school</h1>
+              <br>
+              <div class="dropdown ddown" :class="{ 'is-active': showDropdownSchool }">
+                <div class="dropdown-trigger ddown">
+                    <div class="field">
+                      <div class="control has-icons-left has-icons-right">
+                        <input class="input is-rounded" type="search" placeholder="Search for your School here" v-model="searchValueSchool"/>
+                        <span class="icon is-small is-left">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                          </svg>
+                        </span>
+                        
+                      </div>
+        
+                    </div>
+                </div>
+                <div class="dropdown-menu ddown" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <ul v-if="schools && filteredItemsSchool.length > 0">
+                        <li v-for="item in filteredItemsSchool">
+                          <a class="dropdown-item" v-on:click="setSchool(item.name)">{{ item?.displayName }}</a>
+                          
+                        </li>
+                      </ul>
+                        <a v-else class="dropdown-item">No results found</a>
+                    </div>
+                </div> 
+              </div>  
+              
+          </div>  
+          
+              
+              
+            </div>
+            
+          </div>
+          
+          <br>
+          
+
+        </section>
+       
+        
+        
+        
+        </div>
+        
       </main>
 </body>
 
