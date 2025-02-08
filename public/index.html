@@ -321,7 +321,7 @@
                     <div class="dropdown-content">
                       <ul v-if="schools && filteredItemsSchool.length > 0">
                         <li v-for="item in filteredItemsSchool">
-                          <a class="dropdown-item" v-on:click="setSchool(item.name)">{{ item?.displayName }}</a>
+                          <a class="dropdown-item" v-on:click="setSchool(item.name, item.displayName)">{{ item?.displayName }}</a>
                           
                         </li>
                       </ul>
@@ -333,7 +333,6 @@
           </div>  
           
               
-              
             </div>
             
           </div>
@@ -342,11 +341,27 @@
           
 
         </section>
-       
-        
-        
-        
+        <div class="section">    
+        <div v-show="searched">
+          <div class="fixed-grid has-5-cols	">
+          <div class="grid">
+            <ul v-for="book in bookSelector">
+              <li>
+                <div class="cell">
+                  <div class="box"><img src="De.png">
+                    <h1 class="title is-3 OuiU">{{book.displayName}}</h1><button class="button is-fullwidth">Practice</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
         </div>
+        </div>
+                </div>
+      
+        
+        
         
       </main>
 </body>

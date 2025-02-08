@@ -42,7 +42,19 @@ const app = Vue.createApp({
                 {displayName: 'German International School of Silicon Valley', name:'GISSV'},
                 {displayName: 'Quizzy Preview Quizzes', name:'QPQ'},
             ],
-            searchValueSchool: ''
+            searchValueSchool: '',
+            school: '',
+            searched: false,
+            books: [
+                {displayName: 'Decouvertes 1', avalibility: 'GISSV'},
+                {displayName: 'Decouvertes 2', avalibility: 'GISSV'},
+                {displayName: '¡Apuntate! 1',  avalibility: 'GISSV'},
+                {displayName: '¡Apuntate! 2', avalibility: 'GISSV'},
+                {displayName: 'Quizzy Test+', avalibility: 'GISSV'},
+                {displayName: 'Quizzy PRE25', avalibility: 'GISSV'},
+                {displayName: 'Quizzy Plus', avalibility: 'GISSV'},
+
+            ]
            
         }
     },
@@ -116,6 +128,17 @@ const app = Vue.createApp({
                 return school.displayName.toLowerCase().includes(term); // Check if item name contains the search term
              });
             }
+        },
+        bookSelector() {
+            if (this.school === '') return ''
+            else {
+                const term = this.school.toLowerCase(); // For case-insensitive search
+                return this.books.filter(book => {
+                if (book.avalibility.toLowerCase().includes(term)) {
+                    return book.displayName
+                } // Check if item name contains the search term
+             });
+            }
         }
       
 
@@ -145,6 +168,11 @@ const app = Vue.createApp({
             this.incorrect = 0
             this.completed = 0
             this.input = ''
+        },
+        setSchool(newSchool) {
+            this.school = newSchool
+            this.searchValueSchool = ''
+            this.searched = true
         },
         helpNeeded() {
             this.help = true
