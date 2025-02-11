@@ -366,7 +366,10 @@
               <li>
                 <div class="cell">
                   <div class="box"><img src="De.png" height="40%">
-                    <h1 class="title is-3 OuiU">{{book.displayName}}</h1><button class="button is-fullwidth">Practice</button>
+                    <h1 class="title is-3 OuiU">{{book.displayName}}</h1>
+                    <h1 class="subtitle">{{book.displaySubtitle}}</h1>
+                    <button class="button is-fullwidth is-outlined is-success" v-on:click="switchQuiz(book.quiz)">Practice</button>
+                    
                   </div>
                 </div>
               </li>

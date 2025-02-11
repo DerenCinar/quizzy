@@ -23,12 +23,12 @@ const app = Vue.createApp({
             searchClick: false,
             searchValue: '',
             quizzes: [
-                {displayName: 'america', name:'america'},
-                {displayName: 'cats', name:'cats'},
-                {displayName: 'dogs', name:'dogs'},
-                {displayName: 'D2 - Besser Schreiben', name:'french5'},
-                {displayName: 'D2 - Besser Schreiben PT4', name:'french_pt_4'},
-                {displayName: 'A2 - 2/6/25', name:'A1-SPA'}
+                {displayName: 'america', name:'america', book: 'D'},
+                {displayName: 'cats', name:'cats', book: 'D'},
+                {displayName: 'dogs', name:'dogs', book: 'D'},
+                {displayName: 'D2 - Besser Schreiben', name:'french5', book: 'D'},
+                {displayName: 'D2 - Besser Schreiben PT4', name:'french_pt_4', book: 'D'},
+                {displayName: 'A2 - 2/6/25', name:'A1-SPA', book: 'D'}
             ],
             currentQuiz: '',
             help: false,
@@ -46,19 +46,24 @@ const app = Vue.createApp({
             school: '',
             searched: false,
             books: [
-                {displayName: 'Decouvertes 1', avalibility: 'GISSV'},
-                {displayName: 'Decouvertes 2', avalibility: 'GISSV'},
-                {displayName: '¡Apuntate! 1',  avalibility: 'GISSV'},
-                {displayName: '¡Apuntate! 2', avalibility: 'GISSV'},
-                {displayName: 'Quizzy Test+', avalibility: 'GISSV'},
-                {displayName: 'Quizzy PRE25', avalibility: 'GISSV'},
-                {displayName: 'Quizzy Plus', avalibility: 'GISSV'},
+                {displayName: 'Découvertes 2', displaySubtitle: 'Besser Schreiben', avalibility: 'GISSV', quiz: 'french5'},
+                {displayName: 'Découvertes 2', displaySubtitle: 'Besser Schreiben', avalibility: 'GISSV', quiz: 'french5'},
+                {displayName: 'Découvertes 2', displaySubtitle: 'Besser Schreiben', avalibility: 'GISSV', quiz: 'french5'},
+                {displayName: 'Découvertes 2', displaySubtitle: 'Besser Schreiben', avalibility: 'GISSV', quiz: 'french5'},
 
-            ]
+                {displayName: 'SPA - 2/6/25', avalibility: 'GISSV', quiz: 'A1-SPA'},
+                {displayName: 'SPA - N/A', avalibility: 'GISSV', quiz: 'french5'},
+                {displayName: 'SPA - N/A', avalibility: 'GISSV', quiz: 'french5'},
+                {displayName: 'SPA - N/A', avalibility: 'GISSV', quiz: 'french5'},
+
+            ],
+            
+            unitSelected: 'D'
            
         }
     },
     watch: {
+        
         incorrect(value) {
             if (value > this.questions.length) {
                 this.completed = true
@@ -135,11 +140,13 @@ const app = Vue.createApp({
                 const term = this.school.toLowerCase(); // For case-insensitive search
                 return this.books.filter(book => {
                 if (book.avalibility.toLowerCase().includes(term)) {
-                    return book.displayName
+                    return book
                 } // Check if item name contains the search term
              });
             }
-        }
+        },
+        
+        
       
 
     },
@@ -197,6 +204,9 @@ const app = Vue.createApp({
             this.input = ''
             this.questions = this.createList
         },
+        unitSelector(value) {
+            this.unitSelected = value
+        }
         
     },
         
