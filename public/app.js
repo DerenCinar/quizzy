@@ -58,7 +58,8 @@ const app = Vue.createApp({
 
             ],
             
-            unitSelected: 'D'
+            unitSelected: 'D',
+            formAdd: false
            
         }
     },
@@ -151,6 +152,9 @@ const app = Vue.createApp({
 
     },
     methods: {
+        formChange() {
+            this.formAdd = true
+        },
         checkAnswer() {
             if (this.input === this.questions[this.questionNumber].answer) {
                 this.points = this.points + 1
