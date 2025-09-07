@@ -30,6 +30,7 @@ const app = Vue.createApp({
                 {displayName: 'D2 - Besser Schreiben PT4', name:'french_pt_4', book: 'D'},
                 {displayName: 'A2 - 2/6/25', name:'A1-SPA', book: 'D'},
                 {displayName: 'FRA - Activities', name:'active', book: 'D'}
+                {displayName: 'FRA 8 - Test 1', name:'french8test1', book: 'D'}
 
                 
             ],
