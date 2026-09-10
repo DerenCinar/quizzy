@@ -43,7 +43,7 @@
   width: 100%;
 }
 .wrapper:hover .fa-stack{
-  color: red;
+  color: #e67e22;
   transition: 0.9s;
   transform: rotate(180deg);
 }
@@ -53,7 +53,7 @@
   text-align: center;
 }
 .user:hover .fa-stack{
-  color: red;
+  color: #3273dc;
   transition: 1.8s;
   transform: rotate(360deg);
 }
@@ -62,5 +62,320 @@
   overflow: hidden;
   text-align: center;
 }
+
+/* ============================================================
+   Navbar Styles
+   ============================================================ */
+.app-navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border-bottom: 1px solid #edf2f7;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-navbar .navbar-brand {
+  align-items: center;
+}
+
+.app-navbar .navbar-brand .navbar-item {
+  display: flex;
+  align-items: center;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.app-navbar .navbar-brand .navbar-item img {
+  max-height: 44px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.app-navbar .nav-action-btn {
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.app-navbar .nav-action-btn:not(.is-info):not(.is-create) {
+  background-color: transparent;
+  color: #4a5568;
+  border-color: transparent;
+}
+
+.app-navbar .nav-action-btn:not(.is-info):not(.is-create):hover {
+  background-color: #f7fafc;
+  color: #1a202c;
+}
+
+.app-navbar .nav-action-btn.is-info {
+  box-shadow: 0 2px 8px rgba(32, 156, 238, 0.3);
+}
+
+.app-navbar .nav-action-btn.is-create {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: none;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
+
+.app-navbar .nav-action-btn.is-create:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-1px);
+}
+
+.app-navbar .icon-btn {
+  padding: 0.5rem;
+  height: 38px;
+  width: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.app-navbar .icon-btn:hover {
+  background-color: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.app-navbar .icon-btn.is-active {
+  background-color: #ebf8ff;
+  border-color: #bee3f8;
+  color: #2b6cb0;
+}
+
+/* ============================================================
+   Quiz Scoreboard UI (Fix for image scaling)
+   ============================================================ */
+.quiz-score-board {
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #edf2f7;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-score-level {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.quiz-score-level .level-item {
+  flex: 1 1 0px;
+  min-width: 0;
+}
+
+.score-badge {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+  min-width: 120px;
+}
+
+.score-badge.is-correct {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.score-badge.is-incorrect {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.score-badge .score-heading {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.score-badge .score-val {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.quiz-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-logo-wrapper {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.quiz-logo-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.quiz-logo-img {
+  max-width: 54px;
+  max-height: 54px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.quiz-progress-bar {
+  height: 6px;
+  border-radius: 9999px;
+  margin-top: 1rem;
+  background-color: #edf2f7;
+}
+
+/* ============================================================
+   Profile & Settings Tabs Styles
+   ============================================================ */
+.profile-header-card {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+}
+
+.profile-avatar-wrapper {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 4px solid #38bdf8;
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.profile-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.badge-card {
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.badge-card.is-locked {
+  opacity: 0.5;
+  background: #f8fafc;
+  border-style: dashed;
+}
+
+.badge-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.settings-card {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+/* Custom switch toggle */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+}
+
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 34px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .switch-slider {
+  background-color: #209cee;
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}
+
 
 

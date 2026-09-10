@@ -33,11 +33,10 @@
     </style>
 </head>
 <body id="app">
-    <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-white is-fixed-top app-navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item" href="index.html">
-            <img src="Quizzy.png">
-      
+          <a class="navbar-item" href="index.html" title="Quizzy Home" v-on:click.prevent="currentPage = 'home'">
+            <img src="Quizzy.png" alt="Quizzy Logo">
           </a>
       
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -52,18 +51,18 @@
           <div class="navbar-end">
             <div class="navbar-item">
   
-            <div class="buttons">
-            <button class="button" :class="{ 'is-white' : currentPage === 'home', 'is-info' : currentPage !== 'home'}" v-on:click="currentPage = 'home'">
+            <div class="buttons is-align-items-center">
+            <button class="button nav-action-btn" :class="{ 'is-info' : currentPage === 'home' }" v-on:click="currentPage = 'home'">
                 Home
             </button>
-            <button class="button" :class="{ 'is-white' : currentPage === 'library', 'is-info' : currentPage !== 'library'}" v-on:click="currentPage = 'library'">
+            <button class="button nav-action-btn" :class="{ 'is-info' : currentPage === 'library' }" v-on:click="currentPage = 'library'">
                 Library
             </button>
-            <button class="button" :class="{ 'is-white' : currentPage === 'community', 'is-info' : currentPage !== 'community'}" v-on:click="currentPage = 'community'">
+            <button class="button nav-action-btn" :class="{ 'is-info' : currentPage === 'community' }" v-on:click="currentPage = 'community'">
                 Community
             </button>
-            <button class="button is-rounded" style="color:white;background-color: rgb(255, 204, 0);" v-on:click="currentPage = 'create'">
-                <b>Create</b>
+            <button class="button nav-action-btn is-create" v-on:click="currentPage = 'create'">
+                <i class="fa fa-plus-circle mr-1"></i> <b>Create</b>
             </button>
               <div class="dropdown" :class="{ 'is-active': showDropdown }">
                 <div class="dropdown-trigger">
@@ -92,31 +91,29 @@
                 </div>
             </div>
             
-            <button class="button is-info is-rounded">
+            <!-- Profile Tab Button -->
+            <button class="icon-btn" :class="{ 'is-active': currentPage === 'profile' }" v-on:click="currentPage = 'profile'" title="Profile">
               <div class="user">
-                <span class="fa-stack">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                <span class="fa-stack" style="font-size: 0.95em;">
+                  <i class="fa fa-circle fa-stack-2x" :style="{ color: currentPage === 'profile' ? '#3273dc' : '#e2e8f0' }"></i>
+                  <i class="fa fa-user fa-stack-1x" :style="{ color: currentPage === 'profile' ? '#ffffff' : '#4a5568' }"></i>
                 </span>
               </div>
             </button>
-            <button class="button is-info is-rounded">
+
+            <!-- Settings Tab Button -->
+            <button class="icon-btn" :class="{ 'is-active': currentPage === 'settings' }" v-on:click="currentPage = 'settings'" title="Settings">
               <div class="wrapper">
-                <span class="fa-stack">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-gear fa-stack-1x fa-inverse"></i>
-                </span></div>
-                
+                <span class="fa-stack" style="font-size: 0.95em;">
+                  <i class="fa fa-circle fa-stack-2x" :style="{ color: currentPage === 'settings' ? '#e67e22' : '#e2e8f0' }"></i>
+                  <i class="fa fa-gear fa-stack-1x" :style="{ color: currentPage === 'settings' ? '#ffffff' : '#4a5568' }"></i>
+                </span>
+              </div>
             </button>
             
-           
-      
-        </div> 
-        </div> 
-        
+            </div> 
+            </div> 
           </div>
-      
-
         </div>
       </nav>
       <br>
@@ -216,26 +213,44 @@
       <main v-if="currentPage === 'quiz'">
         <section class="section">
           <div class="container">
-            <div class="box">
-              <nav class="level is-mobile">
+            <div class="quiz-score-board">
+              <div class="quiz-score-level">
                 <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading has-text-success">Correct</p>
-                    <p class="title"><span class="has-text-success">{{points}}</span><span class="has-text-grey">{{ '/' + this.questions.length}}</span></p>
+                  <div class="score-badge is-correct">
+                    <p class="score-heading has-text-success">
+                      <i class="fa fa-check-circle mr-1"></i> Correct
+                    </p>
+                    <p class="score-val has-text-success">
+                      {{ points }} <span class="has-text-grey is-size-6 font-weight-normal">/ {{ questions.length }}</span>
+                    </p>
                   </div>
                 </div>
+
                 <div class="level-item has-text-centered">
-                  <div>
-                   <img src="Quizzy.png" class="center" style="width:20%">
+                  <div class="quiz-logo-container">
+                    <div class="quiz-logo-wrapper">
+                      <img src="Quizzy.png" alt="Quizzy Logo" class="quiz-logo-img">
+                    </div>
+                    <span class="tag is-info is-light is-rounded mt-2" style="font-weight: 600;">
+                      Q {{ Math.min(questionNumber + 1, questions.length) }} / {{ questions.length }}
+                    </span>
                   </div>
                 </div>
+
                 <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading has-text-danger">Incorrect</p>
-                    <p class="title"><span class="has-text-danger">{{incorrect}}</span><span class="has-text-grey">{{ '/' + this.questions.length}}</span></p>
+                  <div class="score-badge is-incorrect">
+                    <p class="score-heading has-text-danger">
+                      <i class="fa fa-times-circle mr-1"></i> Incorrect
+                    </p>
+                    <p class="score-val has-text-danger">
+                      {{ incorrect }} <span class="has-text-grey is-size-6 font-weight-normal">/ {{ questions.length }}</span>
+                    </p>
                   </div>
                 </div>
-              </nav>
+              </div>
+
+              <!-- Live Progress Bar -->
+              <progress class="progress is-info is-small quiz-progress-bar" :value="questionNumber" :max="questions.length"></progress>
             </div>
             <div class="box" v-if="!completed">
               <div class="field">
@@ -528,5 +543,268 @@
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc5_QyobeadXrAgWbtFkI7lfIBxAw8QdoOnzoh53LZ5P5zfGg/viewform?embedded=true" width="100%" height="80%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
         <button class="button is-fullwidth is-outlined is-rounded is-success" v-on:click="this.currentPage = 'library'">Done</button>
       </main>
+
+      <!--Profile Page-->
+      <main v-if="currentPage === 'profile'">
+        <section class="section">
+          <div class="container" style="max-width: 920px;">
+            <!-- Profile Banner Card -->
+            <div class="profile-header-card mb-5">
+              <div class="is-flex is-flex-wrap-wrap is-align-items-center is-justify-content-space-between" style="gap: 1.5rem;">
+                <div class="is-flex is-align-items-center" style="gap: 1.5rem;">
+                  <div class="profile-avatar-wrapper">
+                    <img src="Circle-icons-profile.svg.png" alt="Profile Avatar">
+                  </div>
+                  <div>
+                    <h1 class="title is-3 has-text-white mb-1">{{ userProfile.displayName }}</h1>
+                    <p class="subtitle is-6 has-text-grey-light mb-2">{{ userProfile.bio }}</p>
+                    <div class="tags">
+                      <span class="tag is-info is-light"><i class="fa fa-graduation-cap mr-1"></i> {{ userProfile.school }}</span>
+                      <span class="tag is-dark"><i class="fa fa-calendar-o mr-1"></i> Member since {{ userProfile.memberSince }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button class="button is-info is-rounded" v-on:click="openEditProfileModal()">
+                    <i class="fa fa-pencil mr-2"></i> Edit Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Overview Grid -->
+            <h2 class="title is-4 mb-3"><i class="fa fa-bar-chart mr-2 has-text-info"></i> Learning Statistics</h2>
+            <div class="columns is-multiline mb-5">
+              <div class="column is-6-mobile is-3-tablet">
+                <div class="stat-card has-text-centered">
+                  <p class="heading has-text-grey">Quizzes Finished</p>
+                  <p class="title is-2 has-text-info">{{ userStats.quizzesCompleted }}</p>
+                </div>
+              </div>
+              <div class="column is-6-mobile is-3-tablet">
+                <div class="stat-card has-text-centered">
+                  <p class="heading has-text-grey">Questions Answered</p>
+                  <p class="title is-2 has-text-dark">{{ userStats.questionsAnswered }}</p>
+                </div>
+              </div>
+              <div class="column is-6-mobile is-3-tablet">
+                <div class="stat-card has-text-centered">
+                  <p class="heading has-text-grey">Correct Answers</p>
+                  <p class="title is-2 has-text-success">{{ userStats.correctAnswers }}</p>
+                </div>
+              </div>
+              <div class="column is-6-mobile is-3-tablet">
+                <div class="stat-card has-text-centered">
+                  <p class="heading has-text-grey">Accuracy Rate</p>
+                  <p class="title is-2" :class="accuracyRate >= 70 ? 'has-text-success' : (accuracyRate >= 40 ? 'has-text-warning' : 'has-text-grey')">
+                    {{ accuracyRate }}%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements & Badges -->
+            <h2 class="title is-4 mb-3"><i class="fa fa-trophy mr-2 has-text-warning"></i> Badges & Achievements</h2>
+            <div class="columns is-multiline mb-5">
+              <div class="column is-6-mobile is-4-tablet is-2-desktop" v-for="badge in userAchievements" :key="badge.id">
+                <div class="badge-card" :class="{ 'is-locked': !badge.unlocked }">
+                  <div class="badge-icon">{{ badge.icon }}</div>
+                  <p class="has-text-weight-bold is-size-6 mb-1">{{ badge.title }}</p>
+                  <p class="is-size-7 has-text-grey">{{ badge.desc }}</p>
+                  <span class="tag is-rounded is-small mt-2" :class="badge.unlocked ? 'is-success' : 'is-light'">
+                    {{ badge.unlocked ? 'Unlocked' : 'Locked' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- My Created Quizzes Section -->
+            <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+              <h2 class="title is-4 mb-0"><i class="fa fa-book mr-2 has-text-info"></i> My Created Quizzes</h2>
+              <button class="button is-small is-rounded is-warning" v-on:click="currentPage = 'create'">
+                <i class="fa fa-plus mr-1"></i> New Quiz
+              </button>
+            </div>
+
+            <div v-if="myCreatedQuizzes.length > 0" class="columns is-multiline">
+              <div class="column is-12-mobile is-6-tablet" v-for="quiz in myCreatedQuizzes" :key="quiz.id">
+                <div class="box" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+                      <span class="title is-5 mb-0">{{ quiz.title }}</span>
+                      <span class="tag is-info is-light">{{ quiz.category || 'General' }}</span>
+                    </div>
+                    <p class="subtitle is-6 has-text-grey mb-3">{{ quiz.description || 'No description provided.' }}</p>
+                  </div>
+                  <div>
+                    <div class="is-flex is-justify-content-space-between is-size-7 has-text-grey mb-3">
+                      <span><i class="fa fa-question-circle mr-1"></i> {{ quiz.questions ? quiz.questions.length : 0 }} Questions</span>
+                      <span><i class="fa fa-play mr-1"></i> {{ quiz.playCount || 0 }} plays</span>
+                    </div>
+                    <div class="buttons">
+                      <button class="button is-success is-small" v-on:click="playCommunityQuiz(quiz)">
+                        <i class="fa fa-play mr-1"></i> Play
+                      </button>
+                      <button class="button is-danger is-outlined is-small" v-on:click="deleteMyQuiz(quiz.id)">
+                        <i class="fa fa-trash mr-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="box has-text-centered py-5">
+              <p class="has-text-grey mb-3">You haven't created any custom quizzes yet.</p>
+              <button class="button is-info is-rounded" v-on:click="currentPage = 'create'">
+                <i class="fa fa-pencil mr-2"></i> Create Your First Quiz
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!--Settings Page-->
+      <main v-if="currentPage === 'settings'">
+        <section class="section">
+          <div class="container" style="max-width: 780px;">
+            <div class="mb-5">
+              <h1 class="title is-3"><i class="fa fa-cog mr-2 has-text-info"></i> Settings</h1>
+              <p class="subtitle is-6 has-text-grey">Customize your quiz experience and manage your data.</p>
+            </div>
+
+            <!-- Feedback banner -->
+            <div v-if="settingsFeedback" class="notification is-success is-light mb-4">
+              <i class="fa fa-check-circle mr-2"></i> {{ settingsFeedback }}
+            </div>
+
+            <!-- Gameplay Preferences -->
+            <div class="settings-card mb-5">
+              <div class="p-4" style="background-color: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                <h2 class="title is-5 mb-0"><i class="fa fa-gamepad mr-2 has-text-info"></i> Quiz Gameplay</h2>
+              </div>
+              
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold mb-1">Sound Effects</p>
+                  <p class="is-size-7 has-text-grey">Play synthesized audio tones on correct and incorrect answers</p>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" v-model="settings.soundEnabled" v-on:change="saveSettings()">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold mb-1">Case-Sensitive Answers</p>
+                  <p class="is-size-7 has-text-grey">Require exact uppercase and lowercase matching for answers</p>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" v-model="settings.caseSensitive" v-on:change="saveSettings()">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Data & Quizzes Management -->
+            <div class="settings-card mb-5">
+              <div class="p-4" style="background-color: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                <h2 class="title is-5 mb-0"><i class="fa fa-database mr-2 has-text-info"></i> Data Management</h2>
+              </div>
+
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold mb-1">Export My Quizzes</p>
+                  <p class="is-size-7 has-text-grey">Download your created quizzes as a backup JSON file</p>
+                </div>
+                <button class="button is-light is-rounded is-small" v-on:click="exportQuizzes()">
+                  <i class="fa fa-download mr-2"></i> Export JSON
+                </button>
+              </div>
+
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold mb-1">Import Quizzes</p>
+                  <p class="is-size-7 has-text-grey">Load quizzes from a previously exported JSON backup file</p>
+                </div>
+                <div>
+                  <input type="file" id="importFileInput" style="display: none;" accept=".json" v-on:change="handleImportQuizzes($event)">
+                  <button class="button is-light is-rounded is-small" v-on:click="triggerImport()">
+                    <i class="fa fa-upload mr-2"></i> Import JSON
+                  </button>
+                </div>
+              </div>
+
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold mb-1">Reset Quiz Statistics</p>
+                  <p class="is-size-7 has-text-grey">Clear your lifetime score, answers, and completion counters</p>
+                </div>
+                <button class="button is-warning is-outlined is-rounded is-small" v-on:click="resetStats()">
+                  <i class="fa fa-refresh mr-2"></i> Reset Stats
+                </button>
+              </div>
+
+              <div class="settings-item">
+                <div>
+                  <p class="has-text-weight-bold has-text-danger mb-1">Reset All Application Data</p>
+                  <p class="is-size-7 has-text-grey">Wipes all stored profile, created quizzes, and preferences</p>
+                </div>
+                <button class="button is-danger is-outlined is-rounded is-small" v-on:click="resetAllData()">
+                  <i class="fa fa-trash mr-2"></i> Reset All
+                </button>
+              </div>
+            </div>
+
+            <!-- About Quizzy -->
+            <div class="settings-card">
+              <div class="p-4" style="background-color: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                <h2 class="title is-5 mb-0"><i class="fa fa-info-circle mr-2 has-text-info"></i> About Quizzy</h2>
+              </div>
+              <div class="p-4">
+                <p class="is-size-7 has-text-grey mb-2">Quizzy - The completely FREE quiz and learning platform.</p>
+                <p class="is-size-7 has-text-grey">Version 2.1.0 • Built with Vue 3 & Bulma</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Edit Profile Modal -->
+      <div class="modal" :class="{ 'is-active': showEditProfileModal }">
+        <div class="modal-background" v-on:click="showEditProfileModal = false"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title"><i class="fa fa-user mr-2"></i> Edit Profile</p>
+            <button class="delete" aria-label="close" v-on:click="showEditProfileModal = false"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="label">Display Name</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" placeholder="Your name or handle" v-model="editProfileData.displayName">
+                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Bio / Tagline</label>
+              <div class="control">
+                <textarea class="textarea" placeholder="Tell us something about yourself" v-model="editProfileData.bio"></textarea>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">School or Organization</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" placeholder="e.g. GISSV or Self-Learner" v-model="editProfileData.school">
+                <span class="icon is-small is-left"><i class="fa fa-graduation-cap"></i></span>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot is-justify-content-flex-end">
+            <button class="button" v-on:click="showEditProfileModal = false">Cancel</button>
+            <button class="button is-info" v-on:click="saveEditedProfile()">Save Changes</button>
+          </footer>
+        </div>
+      </div>
 </body>
 
