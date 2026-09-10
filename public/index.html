@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <head>
     <title>Quizzy</title>
+    <!-- Firebase JS SDK (compat mode) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js" defer></script>
+    
     <script src="https://unpkg.com/vue@3" defer></script>
     <script src="app.js" defer></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
@@ -17,9 +22,14 @@
             height: auto;
         }
         
-        
-
-
+        .clickable-feature {
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .clickable-feature:hover {
+            opacity: 0.9;
+            transform: translateX(5px);
+        }
     </style>
 </head>
 <body id="app">
@@ -49,6 +59,9 @@
             <button class="button" :class="{ 'is-white' : currentPage === 'library', 'is-info' : currentPage !== 'library'}" v-on:click="currentPage = 'library'">
                 Library
             </button>
+            <button class="button" :class="{ 'is-white' : currentPage === 'community', 'is-info' : currentPage !== 'community'}" v-on:click="currentPage = 'community'">
+                Community
+            </button>
             <button class="button is-rounded" style="color:white;background-color: rgb(255, 204, 0);" v-on:click="currentPage = 'create'">
                 <b>Create</b>
             </button>
@@ -69,10 +82,9 @@
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                     <div class="dropdown-content">
-                      <ul v-if="quizzes && filteredItems.length > 0">
+                      <ul v-if="filteredItems.length > 0">
                         <li v-for="item in filteredItems">
-                          <a class="dropdown-item" v-on:click="switchQuiz(item.name)">{{ item?.displayName }}</a>
-                          
+                          <a class="dropdown-item" v-on:click="selectSearchItem(item)">{{ item?.displayName }}</a>
                         </li>
                       </ul>
                         <a v-else class="dropdown-item">No results found</a>
@@ -135,10 +147,9 @@
                 </div>
                 <div class="dropdown-menu ddown" id="dropdown-menu" role="menu">
                     <div class="dropdown-content">
-                      <ul v-if="quizzes && filteredItemsHome.length > 0">
+                      <ul v-if="filteredItemsHome.length > 0">
                         <li v-for="item in filteredItemsHome">
-                          <a class="dropdown-item" v-on:click="switchQuiz(item.name)">{{ item?.displayName }}</a>
-                          
+                          <a class="dropdown-item" v-on:click="selectSearchItem(item)">{{ item?.displayName }}</a>
                         </li>
                       </ul>
                         <a v-else class="dropdown-item">No results found</a>
@@ -159,13 +170,19 @@
           <div class="hero-body">
             
             <h1 class="title" style="color:white">With Quizzy you can </h1>
-            <ul>
-              <li><h1>Learn for Tests</h1></li>
-              <li><h1>Create Quizzes for <b>FREE</b></h1></li>
-              <li><h1>Play quizzes made by us</h1></li>
-              <li><h1>Play quizzes made by others* </h1></li>
-              <li><h1 class="subtitle is-7" style="color:white">(*currently unavalible)</h1></li>
-
+            <ul style="list-style: none; padding-left: 0;">
+              <li class="clickable-feature" v-on:click="currentPage = 'library'">
+                <h1><i class="fa fa-book mr-2"></i> Learn for Tests</h1>
+              </li>
+              <li class="clickable-feature" v-on:click="currentPage = 'create'">
+                <h1><i class="fa fa-plus-circle mr-2"></i> Create Quizzes for <b>FREE</b></h1>
+              </li>
+              <li class="clickable-feature" v-on:click="currentPage = 'library'">
+                <h1><i class="fa fa-star mr-2"></i> Play quizzes made by us</h1>
+              </li>
+              <li class="clickable-feature" v-on:click="currentPage = 'community'">
+                <h1><i class="fa fa-users mr-2"></i> Play quizzes made by others <span class="tag is-warning is-light ml-2">AVAILABLE NOW</span></h1>
+              </li>
             </ul>
             
           </div>
@@ -246,9 +263,9 @@
               </div>
               <div class="field">
               
-             <button v-if="this.points === this.questions.length && this.incorrect === 0" class="button is-success is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
-             <button v-if="this.points === this.questions.length && this.incorrect > 0" class="button is-warning is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
-             <button v-if="this.incorrect === this.questions.length" class="button is-danger is-fullwidth" v-on:click="switchQuiz(currentQuiz)">Restart</button>
+             <button v-if="this.points === this.questions.length && this.incorrect === 0" class="button is-success is-fullwidth" v-on:click="restartCurrentQuiz()">Restart</button>
+             <button v-if="this.points === this.questions.length && this.incorrect > 0" class="button is-warning is-fullwidth" v-on:click="restartCurrentQuiz()">Restart</button>
+             <button v-if="this.incorrect === this.questions.length" class="button is-danger is-fullwidth" v-on:click="restartCurrentQuiz()">Restart</button>
 
               </div>
             </div>
@@ -257,7 +274,7 @@
                 <h1><b>It seems like you need help</b></h1>
               </div>
               <div class="field">
-                <h1>The answer to this question is: <b class="has-text-success">{{this.questions[this.questionNumber].answer}}</b></h1>
+                <h1>The answer to this question is: <b class="has-text-success">{{this.questions[this.questionNumber] ? this.questions[this.questionNumber].answer : ''}}</b></h1>
 
               </div>
               <div class="field">
@@ -272,44 +289,163 @@
       <!--Create Page-->
       <main v-if="currentPage === 'create'">
         <section class="section">
-        <nav class="panel is-info" >
-          <p class="panel-heading">Quizzy | Quiz Creator 1.0</p>
-          <div class="panel-block">
-            <div class="coulums ddown">
-              <div class="coulum">
-                <input class="input" type="text" placeholder="Type Question here"  v-model="createQuestion"/>
+          <div class="container">
+            <nav class="panel is-info">
+              <p class="panel-heading">
+                <i class="fa fa-pencil-square-o mr-2"></i> Quizzy | Quiz Creator
+              </p>
+              
+              <!-- Quiz Metadata Section -->
+              <div class="panel-block is-block">
+                <div class="columns is-multiline">
+                  <div class="column is-6">
+                    <label class="label">Quiz Title <span class="has-text-danger">*</span></label>
+                    <input class="input" type="text" placeholder="e.g. World Geography Quiz" v-model="createTitle" />
+                  </div>
+                  <div class="column is-6">
+                    <label class="label">Author Name</label>
+                    <input class="input" type="text" placeholder="e.g. Quiz Master" v-model="createAuthor" />
+                  </div>
+                  <div class="column is-6">
+                    <label class="label">Category / Subject</label>
+                    <div class="select is-fullwidth">
+                      <select v-model="createCategory">
+                        <option value="General">General</option>
+                        <option value="Languages">Languages</option>
+                        <option value="Science">Science</option>
+                        <option value="History">History</option>
+                        <option value="Geography">Geography</option>
+                        <option value="Math">Math</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <label class="label">Description</label>
+                    <input class="input" type="text" placeholder="Short summary of your quiz..." v-model="createDescription" />
+                  </div>
+                </div>
               </div>
-              <br>
-              <div class="coulum">
-                <input class="input" type="text" placeholder="Type Answer here"  v-model="createAnswer"/>
+
+              <!-- Add Question Section -->
+              <div class="panel-block is-block">
+                <h3 class="subtitle is-6 mb-2"><b>Add Questions</b></h3>
+                <div class="columns">
+                  <div class="column is-5">
+                    <input class="input" type="text" placeholder="Type Question here" v-model="createQuestion" v-on:keyup.enter="addQuestion()"/>
+                  </div>
+                  <div class="column is-5">
+                    <input class="input" type="text" placeholder="Type Answer here" v-model="createAnswer" v-on:keyup.enter="addQuestion()"/>
+                  </div>
+                  <div class="column is-2">
+                    <button class="button is-success is-fullwidth" v-on:click="addQuestion()">
+                      <i class="fa fa-plus mr-1"></i> Add
+                    </button>
+                  </div>
+                </div>
               </div>
-              <br>
-              <button class="button is-success is-outlined is-fullwidth" v-on:click="addQuestion()">
-                Add Question
+
+              <!-- Question List Preview -->
+              <div class="panel-block is-block" v-if="createList.length > 0">
+                <table class="table is-fullwidth is-striped is-hoverable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Question</th>
+                      <th>Answer</th>
+                      <th class="has-text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(q, idx) in createList" :key="idx">
+                      <td>{{ idx + 1 }}</td>
+                      <td>{{ q.question }}</td>
+                      <td><span class="has-text-success font-weight-bold">{{ q.answer }}</span></td>
+                      <td class="has-text-right">
+                        <button class="button is-small is-danger is-outlined" v-on:click="removeQuestion(idx)">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="panel-block">
+                <button class="button is-info is-fullwidth" :disabled="createList.length === 0 || !createTitle" v-on:click="publishQuiz()">
+                  <i class="fa fa-cloud-upload mr-2"></i> Publish Quiz to Community
+                </button>
+              </div>
+            </nav>
+          </div>
+        </section>
+      </main>
+
+      <!--Community Page-->
+      <main v-if="currentPage === 'community'">
+        <section class="hero is-info is-bold">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">Community Quizzes</h1>
+              <h2 class="subtitle">Explore and play quizzes created by Quizzy users!</h2>
+              
+              <div class="field mt-4">
+                <div class="control has-icons-left">
+                  <input class="input is-medium is-rounded" type="search" placeholder="Search community quizzes by title, description, or author..." v-model="searchCommunity"/>
+                  <span class="icon is-medium is-left">
+                    <i class="fa fa-search"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="buttons mt-3">
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'All', 'is-info is-inverted is-outlined': communityFilterCategory !== 'All'}" v-on:click="communityFilterCategory = 'All'">All</button>
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'Languages', 'is-info is-inverted is-outlined': communityFilterCategory !== 'Languages'}" v-on:click="communityFilterCategory = 'Languages'">Languages</button>
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'Science', 'is-info is-inverted is-outlined': communityFilterCategory !== 'Science'}" v-on:click="communityFilterCategory = 'Science'">Science</button>
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'Geography', 'is-info is-inverted is-outlined': communityFilterCategory !== 'Geography'}" v-on:click="communityFilterCategory = 'Geography'">Geography</button>
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'History', 'is-info is-inverted is-outlined': communityFilterCategory !== 'History'}" v-on:click="communityFilterCategory = 'History'">History</button>
+                <button class="button is-small is-rounded" :class="{'is-white': communityFilterCategory === 'General', 'is-info is-inverted is-outlined': communityFilterCategory !== 'General'}" v-on:click="communityFilterCategory = 'General'">General</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container">
+            <div v-if="filteredCommunityQuizzes.length > 0" class="columns is-multiline">
+              <div class="column is-12-mobile is-6-tablet is-4-desktop" v-for="item in filteredCommunityQuizzes" :key="item.id || item.title">
+                <div class="box" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+                      <span class="title is-5 mb-0">{{ item.title }}</span>
+                      <span class="tag is-info is-light">{{ item.category || 'General' }}</span>
+                    </div>
+                    <p class="subtitle is-6 has-text-grey mb-3">{{ item.description || 'No description provided.' }}</p>
+                  </div>
+                  
+                  <div>
+                    <div class="is-flex is-justify-content-space-between is-size-7 has-text-grey mb-3">
+                      <span><i class="fa fa-user mr-1"></i> {{ item.author || 'Anonymous' }}</span>
+                      <span><i class="fa fa-play-circle mr-1"></i> {{ item.playCount || 0 }} plays</span>
+                    </div>
+                    <button class="button is-success is-fullwidth" v-on:click="playCommunityQuiz(item)">
+                      <i class="fa fa-play mr-2"></i> Play Quiz ({{ item.questions ? item.questions.length : 0 }} Qs)
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="has-text-centered py-6">
+              <i class="fa fa-folder-open-o fa-3x has-text-grey-light mb-3"></i>
+              <h2 class="title is-4">No community quizzes found</h2>
+              <p class="subtitle is-6">Be the first to create one or try a different search!</p>
+              <button class="button is-warning is-rounded" v-on:click="currentPage = 'create'">
+                Create a Quiz Now
               </button>
             </div>
           </div>
-          
-          <ul>
-            <li v-for="question in createList">
-              <div class="column">{{'Question: ' + question.question}}</div>                  
-              
-              <div class="column has-text-right">{{'Answer: ' + question.answer}}</div>                  
-
-            </li>
-          </ul>
-          
-          
-          
-          <div class="panel-block">
-            <button class="button is-info is-outlined is-fullwidth" v-on:click="saveQuiz()">
-              Done
-            </button>
-            
-          </div>
-        </nav>
-      </section>
+        </section>
       </main>
+
       
         
       <!--Library Page-->
